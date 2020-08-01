@@ -1,0 +1,66 @@
+{% extends "orders/profile.html" %}
+
+{% block Content %}
+<h4>Pizzas</h4><br>
+<table>
+	<tr>
+		<th>Pizza name</th>
+		<th>Topping</th>
+		<th>Size</th>
+		<th>Price</th>
+		<th>Quantity</th>
+		<th>Add to Cart</th>
+	</tr>
+	{% for pizza in pizzas %}
+	<tr>
+		<form action="{% url 'pizzas' %}" method="POST">
+			{% csrf_token %}
+			<input type="hidden" name="pizza_id" value="{{ pizza.id }}">
+			<td>{{ pizza.pizza_name }}</td>
+			<td id="topping_type">{{ pizza.topping_type }}<br>
+			<div> 
+				{% if pizza.topping_type == "1 Topping" %}
+				<select name="topping1" id="topping1{{ pizza.id }}" required="required">
+					<option disabled selected value="">Select</option>
+					{% for topping in toppings %}
+					<option value="{{ topping.id }}">{{ topping.topping_name }}</option>
+					{% endfor %}
+				</select>
+				{% elif pizza.topping_type == "2 Toppings" or pizza.topping_type == "3 Toppings" %}
+				<select name="topping1" id="topping1{{ pizza.id }}" onchange="topping_change(this,'{{ pizza.id }}','topping1')" required="required">
+					<option disabled selected value="">Select</option>
+					{% for topping in toppings %}
+					<option value="{{ topping.id }}">{{ topping.topping_name }}</option>
+					{% endfor %}
+				</select>
+				<select name="topping2" id="topping2{{ pizza.id }}" onchange="topping_change(this,'{{ pizza.id }}','topping2')" required="required">
+					<option disabled selected value="">Select</option>
+					{% for topping in toppings %}
+					<option value="{{ topping.id }}">{{ topping.topping_name }}</option>
+					{% endfor %}
+				</select>
+				{% endif %}
+				{% if pizza.topping_type == "3 Toppings" %}
+				<select name="topping3" id="topping3{{ pizza.id }}" onchange="topping_change(this,'{{ pizza.id }}','topping3')" required="required">
+					<option disabled selected value="">Select</option>
+					{% for topping in toppings %}
+					<option value="{{ topping.id }}">{{ topping.topping_name }}</option>
+					{% endfor %}
+				</select>
+				{% endif %}
+			</div>
+			</td>
+			<td>{{ pizza.size }}</td>
+			<td>{{ pizza.price }}</td>
+			<td><select name="quantity" required="required">
+				<option disabled selected value="">Select</option>
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+			</select></td>
+			<td><button type="submit">Add to Cart</button></td>
+		</form>
+	</tr>
+	{% endfor %}
+</table>
+{% endblock %}

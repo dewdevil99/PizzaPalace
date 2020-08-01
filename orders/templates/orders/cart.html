@@ -1,0 +1,84 @@
+{% extends "orders/profile.html" %}
+
+{% block Content %}
+<h5>Items - {{ cart.count }}</h5><br>
+<h5>Total - Rs.{{ cart.total }}</h5><br>
+<h4><u>Cart items</u></h4><br>
+<h4>Pizzas</h4>
+<table>
+	<tr>
+		<th>Pizza name</th>
+		<th>Topping Type</th>
+		<th>Toppings</th>
+		<th>Size</th>
+		<th>Price</th>
+		<th>Quantity</th>
+		<th>Remove</th>
+	</tr>
+
+{% for p in pizzas %}
+	<tr>
+		<td>{{ p.pizza.pizza_name }}</td>
+		<td>{{ p.pizza.topping_type }}</td>
+		<td>{% for top in p.toppings.all %}" {{ top }} "{% empty %} None {% endfor %}</td>
+		<td>{{ p.pizza.size }}</td>
+		<td>{{ p.pizza.price }}</td>
+		<td><select onchange="quantity_change(this, '{{ p.id }}')">
+			{% for i in range %}
+			{% if i == p.quantity %}
+			<option selected>{{ i }}</option>
+			{% else %}
+			<option>{{ i }}</option>
+			{% endif %}
+			{% endfor %}
+		</select></td>
+		<td><button type="button" onclick="delete_item('{{ p.id }}')">Remove</button></td>
+	</tr>
+{% empty %}
+<tr>
+<th><h5>No pizzas in the cart</h5></th>
+<tr>
+{% endfor %}
+</table>
+<br>
+
+<h4>Subs</h4>
+<table>
+	<tr>
+		<th>Sub name</th>
+		<th>Size</th>
+		<th>Price</th>
+		<th>Quantity</th>
+		<th>Remove</th>
+	</tr>
+
+{% for s in subs %}
+	<tr>
+		<td>{{ s.sub.sub_name }}</td>
+		<td>{{ s.sub.size }}</td>
+		<td>{{ s.sub.price }}</td>
+		<td><select onchange="quantity_change(this, '{{ s.id }}')">
+			{% for i in range %}
+			{% if i == s.quantity %}
+			<option selected>{{ i }}</option>
+			{% else %}
+			<option>{{ i }}</option>
+			{% endif %}
+			{% endfor %}
+		</select></td>
+		<td><button type="button" onclick="delete_item('{{ s.id }}')">Remove</button></td>
+	</tr>
+{% empty %}
+<tr>
+<th><h5>No subs in the cart</h5></th>
+<tr>
+{% endfor %}
+</table>
+<br><br>
+<form action="{% url 'order' %}" method="POST">
+	{% csrf_token %}
+	<button type="submit">Order</button>
+</form>
+<br>
+
+{% endblock %}

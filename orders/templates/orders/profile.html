@@ -1,0 +1,33 @@
+{% extends "orders/base.html" %}
+{% load static %}
+
+{% block Script %}
+<link rel="stylesheet" href="{% static 'orders/menu.css' %}">
+<script type="text/javascript" src="{% static 'orders/menu_script.js' %}"></script>
+{% endblock %}
+
+{% block Nav %}
+<li class="nav-item">
+	<a href="{% url 'pizzas' %}" class="nav-link">Pizzas</a>
+</li>
+<li class="nav-item">
+	<a href="{% url 'subs' %}" class="nav-link">Subs</a>
+</li>
+<li class="nav-item">
+	<a href="{% url 'cart' %}" class="nav-link">Cart</a>
+</li>
+<li class="nav-item">
+	<a href="{% url 'order' %}" class="nav-link">Orders</a>
+</li>
+<li class="nav-item">
+	<a href="{% url 'logout' %}" class="nav-link">Logout</a>
+</li>
+{% endblock %}
+
+{% block Main %}
+<h3 style="padding-left: 10px;">Welcome to Pizza Palace</h3><br>
+<div id="content">
+{% block Content %}
+{% endblock %}
+</div>
+{% endblock %}

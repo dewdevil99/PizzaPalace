@@ -1,0 +1,60 @@
+{% extends "orders/profile.html" %}
+
+{% block Content %}
+<h3>Your orders</h3><br>
+{% for o_object, products in order_items.items %}
+<h4>Order id - {{ o_object.id }}</h4>
+<h5>Order items - {{ o_object.count }}</h5>
+<h5>Total amount - Rs. {{ o_object.total }}</h5>
+
+<div style="border-left: 10px">
+	<h4>Pizzas</h4>
+	<table>
+		<tr>
+			<th>Pizza name</th>
+			<th>Topping Type</th>
+			<th>Toppings</th>
+			<th>Size</th>
+			<th>Price</th>
+			<th>Quantity</th>
+		</tr>
+		{% for product in products %}
+		{% if product.pizza %}
+		<tr>
+			<td>{{ product.pizza.pizza_name }}</td>
+			<td>{{ product.pizza.topping_type }}</td>
+			<td>{% for top in product.toppings.all %}" {{ top }} "{% empty %} None {% endfor %}</td>
+			<td>{{ product.pizza.size }}</td>
+			<td>{{ product.pizza.price }}</td>
+			<td>{{ product.quantity }}</td>
+		</tr>
+		{% endif %}
+		{% endfor %}
+	</table>
+	<br>
+
+	<h4>Subs</h4>
+	<table>
+		<tr>
+			<th>Sub name</th>
+			<th>Size</th>
+			<th>Price</th>
+			<th>Quantity</th>
+		</tr>
+		{% for product in products %}
+		{% if product.sub %}
+		<tr>
+			<td>{{ product.sub.sub_name }}</td>
+			<td>{{ product.sub.size }}</td>
+			<td>{{ product.sub.price }}</td>
+			<td>{{ product.quantity }}</td>
+		</tr>
+		{% endif %}
+		{% endfor %}
+	</table>
+</div>
+<br><hr>
+{% empty %}
+<h4>No orders</h4>
+{% endfor %}
+{% endblock %}

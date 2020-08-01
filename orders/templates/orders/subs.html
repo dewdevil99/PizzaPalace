@@ -1,0 +1,31 @@
+{% extends "orders/profile.html" %}
+
+{% block Content %}
+<h4>Subs</h4><br>
+<table>
+	<tr>
+		<th>Sub name</th>
+		<th>Size</th>
+		<th>Price</th>
+		<th>Quantity</th>
+		<th>Add to Cart</th>
+	</tr>
+	{% for sub in subs %}
+	<tr>
+		<form action="{% url 'subs' %}" method="POST">
+			{% csrf_token %}
+			<input type="hidden" name="sub_id" value="{{ sub.id }}">
+			<td>{{ sub.sub_name }}</td>
+			<td>{{ sub.size }}</td>
+			<td>{{ sub.price }}</td>
+			<td><select name="quantity">
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+			</select></td>
+			<td><button type="submit">Add to Cart</button></td>
+		</form>
+	</tr>
+	{% endfor %}
+</table>
+{% endblock %}
