@@ -9,6 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import Customer, Pizza, Sub, Cart, Cart_Item, Topping, Order, Order_Item
 
 # Create your views here.
+# view which handles login
 def index(request):
 	try:
 		u_name=request.POST["u_name"]
@@ -26,6 +27,7 @@ def index(request):
 		else:
 			return HttpResponseRedirect(reverse('profile'))
 
+# view which handles registration
 def register(request):
 	try:
 		u_name=request.POST["u_name"]
@@ -41,13 +43,16 @@ def register(request):
 	except:
 		return render(request, "orders/register.html")
 
+# view rendered on login aka profile page
 def profile(request):
 	return render(request, "orders/profile.html")
 
+# view rendered on logout
 def logout_view(request):
 	logout(request)
 	return HttpResponseRedirect(reverse('index'))
 
+# view which manages pizzas section
 def pizzas(request):
 	u=request.user
 	cart,created=Cart.objects.get_or_create(cust_id=u.customer)
@@ -98,6 +103,7 @@ def pizzas(request):
 				item.save()
 	return render(request, "orders/pizzas.html", context)
 
+# view which manages subs section
 def subs(request):
 	u=request.user
 	cart,created=Cart.objects.get_or_create(cust_id=u.customer)
@@ -121,6 +127,7 @@ def subs(request):
 		
 	return render(request, "orders/subs.html", context)
 
+# view which handles cart operations
 def cart(request):
 	u=request.user
 	cart,created=Cart.objects.get_or_create(cust_id=u.customer)
@@ -143,6 +150,7 @@ def cart(request):
 		}
 		return render(request, "orders/cart.html", context)
 
+# view which handles operations on orders
 def order(request):
 	if(request.method=="POST"):
 		u=request.user
@@ -167,6 +175,7 @@ def order(request):
 			context["order_items"][o]=o.o_items.all()
 		return render(request, "orders/order.html", context)
 
+# view to update quantity in the carts page
 @csrf_exempt
 def quantity_update(request):
 	if(request.method=="POST"):
@@ -175,6 +184,7 @@ def quantity_update(request):
 		item.save()
 		return HttpResponseRedirect(reverse('cart'))
 
+# view to remove item in the carts page
 @csrf_exempt
 def delete_item(request):
 	if(request.method=="POST"):

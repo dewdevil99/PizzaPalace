@@ -72,6 +72,7 @@ class Cart_Item(models.Model):
 
 class Order(models.Model):
 	cust_id=models.ForeignKey(Customer, on_delete=models.CASCADE)
+	status=models.BooleanField(default=False)
 	@property
 	def count(self):
 		return Order_Item.objects.filter(order=self).aggregate(Sum('quantity'))['quantity__sum']
