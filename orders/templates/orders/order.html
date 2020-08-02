@@ -6,6 +6,7 @@
 <h4>Order id - {{ o_object.id }}</h4>
 <h5>Order items - {{ o_object.count }}</h5>
 <h5>Total amount - Rs. {{ o_object.total }}</h5>
+<h5>Order status - {% if o_object.status == False %} Queued {% else %} Completed {% endif %}</h5>
 
 <div style="border-left: 10px">
 	<h4>Pizzas</h4>
